@@ -1,5 +1,7 @@
 import mysql from 'mysql2'
 import dotenv from 'dotenv'
+import csvtojson from 'csvtojson'
+import fs from 'fs'
 
 // Load environment variables
 dotenv.config()
@@ -18,9 +20,43 @@ export async function getFilelist() {
 
 export async function getFiledata(filename) {
     const [rows] = await pool.query(`
-        SELECT *
+        SELECT post_id, id, name, email, body
         FROM filedata
         WHERE filename = ?
         `, [filename])
         return rows
+}
+
+export async function uploadFileData(req, res) {
+    const filename = req.file.originalname
+    const filepath = process.env.UPLOAD_DIR + filename
+
+    // Insert filename into table file_list
+    await pool.query(`
+        INSERT INTO file_list (name)
+        VALUES (?)
+        `, [filename])
+
+    // Parse csv file into json object
+    const jsonArray = await csvtojson().fromFile(filepath)
+
+    // Insert file contents into db
+    for (let i = 0; i < jsonArray.length; i++) {
+        const postId = jsonArray[i]["postId"]
+        const id = jsonArray[i]["id"]
+        const name = jsonArray[i]["name"]
+        const email = jsonArray[i]["email"]
+        const body = jsonArray[i]["body"]
+        await pool.query(`
+            INSERT INTO filedata (post_id, id, filename, name, email, body)
+            VALUES (?, ?, ?, ?, ?, ?)
+            `, [postId, id, filename, name, email, body])
+    }
+
+    // Delete csv file after db insert query
+    fs.unlink(filepath, (err) => {
+        if (err) {
+            console.log(`Error removing file: ${err}`)
+        }
+    })
 }
