@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 
 const SIDEBAR_ITEMS = [
     { name: "Index", icon: Home, color: "#8B5CF6", href: "/" },
-    { name: "File Viewer", icon: View, color: "#EC4899", href: "/viewer" },
+    { name: "View File", icon: View, color: "#EC4899", href: "/view" },
 ]
 
 const FrontPage = () => {
