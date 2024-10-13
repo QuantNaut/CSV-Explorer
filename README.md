@@ -40,3 +40,13 @@ In your submission, must include the following:
 1. Run `npm install` to install the dependencies.
 2. Run `npm run start`.
 3. Open your browser and navigate to `http://localhost:5173/`
+
+
+#### TO NOTE:
+Any CSV file uploaded via the webapp needs to conform to the sample file structure below:
+
+`"postId","id","name","email","body"`
+
+`"1","1","id labore ex et quam laborum","Eliseo@gardner.biz","laudantium enim quasi est quidem magnam"`
+
+`"1","2","quo vero reiciendis velit similique earum","Jayne_Kuhic@sydney.com","est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem"`
