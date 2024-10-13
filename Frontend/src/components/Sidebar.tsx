@@ -1,4 +1,4 @@
-import { Home, Menu, View } from "lucide-react"
+import { Home, Menu, Upload, View } from "lucide-react"
 import { useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Link } from "react-router-dom"
@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 const SIDEBAR_ITEMS = [
     { name: "Home", icon: Home, color: "#8B5CF6", href: "/" },
     { name: "File Viewer", icon: View, color: "#EC4899", href: "/view" },
+    { name: "Upload File", icon: Upload, color: "#F59E0B", href: "/upload" }
 ]
 
 const FrontPage = () => {

@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import Sidebar from "./components/Sidebar"
 import HomePage from "./pages/HomePage"
 import FileViewerPage from "./pages/FileViewerPage"
+import UploadPage from "./pages/UploadPage"
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/view" element={<FileViewerPage />} />
+        <Route path="/upload" element={<UploadPage />} />
       </Routes>
     </div>
   )
