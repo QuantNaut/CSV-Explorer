@@ -1,23 +1,42 @@
 import { motion } from "framer-motion"
 import { Edit, Search, Trash2 } from "lucide-react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import axios from "axios"
 import Header from "../components/Header"
-
-const FILE_LIST = [
-    { id: 1, name: "data_1.csv", uploaded: new Date().toISOString() },
-    { id: 2, name: "data_2.csv", uploaded: new Date().toISOString() },
-]
+import { FileInfo } from "../types"
 
 const HomePage = () => {
     const [searchTerm, setSearchTerm] = useState("")
-    const [filteredFileList, setFilteredFileList] = useState(FILE_LIST)
+    const [actionTaken, setActionTaken] = useState(false)
+    const [fileList, setFileList] = useState<FileInfo[] | null>(null)
+    const [filteredFileList, setFilteredFileList] = useState(fileList)
+
+    // Get list of uploaded files via api call
+    useEffect(() => {
+        const url = "http://127.0.0.1:3000/file/list";
+        axios.get(url).then((response) => {
+            console.log(response.data);
+            setFileList(response.data.files);
+        }).catch((error) => {
+            console.error("Error fetching files:", error);
+        });
+        // Re-run API call in event of any upload/delete actions
+        setActionTaken(false);
+    }, [actionTaken]);
+
+    // Update filteredFileList when fileList changes
+    useEffect(() => {
+        if (fileList) {
+            setFilteredFileList(fileList); // Set the filtered list based on the fileList
+        }
+    }, [fileList]);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Get the search string
         const term = e.target.value.toLowerCase()
         setSearchTerm(term)
         // Filter list of files by filename
-        const filteredFiles = FILE_LIST.filter((file) => file.name.toLowerCase().includes(term))
+        const filteredFiles = fileList!.filter((file) => file.name.toLowerCase().includes(term))
         setFilteredFileList(filteredFiles)
     }
 
@@ -59,7 +78,18 @@ const HomePage = () => {
                             </thead>
                             {/* Table body */}
                             <tbody className="divide-y divide-gray-700">
-                                {filteredFileList.map(file => (
+                                {/* If there are no uploaded files */}
+                                {filteredFileList && filteredFileList.length === 0 && (
+                                    <motion.tr
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">No file has been uploaded yet</td>
+                                    </motion.tr>
+                                )}
+                                {/* If there is at least 1 uploaded file */}
+                                {filteredFileList && filteredFileList.length > 0 && filteredFileList.map(file => (
                                     <motion.tr
                                         key={file.id}
                                         initial={{ opacity: 0 }}
