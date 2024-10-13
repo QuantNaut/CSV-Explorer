@@ -30,12 +30,13 @@ export async function getFiledata(filename) {
 export async function uploadFileData(req, res) {
     const filename = req.file.originalname
     const filepath = process.env.UPLOAD_DIR + filename
+    const currDateTime = new Date().toISOString()
 
     // Insert filename into table file_list
     await pool.query(`
-        INSERT INTO file_list (name)
-        VALUES (?)
-        `, [filename])
+        INSERT INTO file_list (name, uploaded)
+        VALUES (?, ?)
+        `, [filename, currDateTime])
 
     // Parse csv file into json object
     const jsonArray = await csvtojson().fromFile(filepath)
