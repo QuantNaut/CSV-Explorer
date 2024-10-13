@@ -26,7 +26,9 @@ VALUES
 
 INSERT INTO filedata(post_id, id, filename, name, email, body)
 VALUES
-(1,1,'test_1.csv','test data 1-1','test11@gmail.com','test test test test'),
-(1,2,'test_1.csv','test data 1-2','test12@gmail.com','test test test test'),
-(2,1,'test_2.csv','test data 2-1','test21@gmail.com','test test test test'),
-(2,2,'test_2.csv','test data 2-2','test22@gmail.com','test test test test');
+(10001,10001,'test_1.csv','test data 10001','test10001@gmail.com','test test test test'),
+(10002,10002,'test_1.csv','test data 10002','test10002@gmail.com','test test test test'),
+(10003,10003,'test_1.csv','test data 10003','test10003@gmail.com','test test test test'),
+(20001,20001,'test_2.csv','test data 20001','test20001@gmail.com','test test test test'),
+(20002,20002,'test_2.csv','test data 20002','test20002@gmail.com','test test test test'),
+(20003,20003,'test_2.csv','test data 20003','test20003@gmail.com','test test test test');
