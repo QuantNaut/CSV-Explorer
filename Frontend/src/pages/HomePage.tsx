@@ -1,6 +1,7 @@
 import { motion } from "framer-motion"
-import { Edit, Search, Trash2 } from "lucide-react"
+import { Eye, Search, Trash2 } from "lucide-react"
 import React, { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import axios from "axios"
 import Header from "../components/Header"
 import { FileInfo } from "../types"
@@ -13,23 +14,22 @@ const HomePage = () => {
 
     // Get list of uploaded files via api call
     useEffect(() => {
-        const url = "http://127.0.0.1:3000/file/list";
+        const url = "http://127.0.0.1:3000/file/list"
         axios.get(url).then((response) => {
-            console.log(response.data);
-            setFileList(response.data.files);
+            setFileList(response.data.files)
         }).catch((error) => {
-            console.error("Error fetching files:", error);
-        });
+            console.error("Error fetching file list:", error)
+        })
         // Re-run API call in event of any upload/delete actions
-        setActionTaken(false);
-    }, [actionTaken]);
+        setActionTaken(false)
+    }, [actionTaken])
 
     // Update filteredFileList when fileList changes
     useEffect(() => {
         if (fileList) {
-            setFilteredFileList(fileList); // Set the filtered list based on the fileList
+            setFilteredFileList(fileList) // Set the filtered list based on the fileList
         }
-    }, [fileList]);
+    }, [fileList])
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Get the search string
@@ -101,9 +101,11 @@ const HomePage = () => {
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{file.uploaded}</td>
                                         <td className='px-6 py-4 whitespace-nowrap text-sm text-gray-300'>
-                                            <button className='text-indigo-400 hover:text-indigo-300 mr-2'>
-                                                <Edit size={18} />
-                                            </button>
+                                            <Link to={"/view?filename="+file.name}>
+                                                <button className='text-indigo-400 hover:text-indigo-300 mr-2'>
+                                                    <Eye size={18} />
+                                                </button>
+                                            </Link>
                                             <button className='text-red-400 hover:text-red-300'>
                                                 <Trash2 size={18} />
                                             </button>
