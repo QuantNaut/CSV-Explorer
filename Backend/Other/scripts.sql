@@ -2,6 +2,7 @@
 CREATE TABLE `file_list` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(256) NOT NULL,
+  `uploaded` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `filename_UNIQUE` (`name`)
 );
