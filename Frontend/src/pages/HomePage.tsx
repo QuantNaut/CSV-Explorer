@@ -1,24 +1,23 @@
 import { motion } from "framer-motion"
 import { Edit, Search, Trash2 } from "lucide-react"
 import React, { useState } from "react"
-
 import Header from "../components/Header"
 
-const FILE_INFO = [
+const FILE_LIST = [
     { id: 1, name: "data_1.csv", uploaded: new Date().toISOString() },
     { id: 2, name: "data_2.csv", uploaded: new Date().toISOString() },
 ]
 
 const HomePage = () => {
     const [searchTerm, setSearchTerm] = useState("")
-    const [filteredFileList, setFilteredFileList] = useState(FILE_INFO)
+    const [filteredFileList, setFilteredFileList] = useState(FILE_LIST)
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Get the search string
         const term = e.target.value.toLowerCase()
         setSearchTerm(term)
         // Filter list of files by filename
-        const filteredFiles = FILE_INFO.filter(file => file.name.toLowerCase().includes(term))
+        const filteredFiles = FILE_LIST.filter((file) => file.name.toLowerCase().includes(term))
         setFilteredFileList(filteredFiles)
     }
 
