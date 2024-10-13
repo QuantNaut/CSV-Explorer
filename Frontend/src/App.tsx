@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom"
 import Sidebar from "./components/Sidebar"
-import IndexPage from "./pages/IndexPage"
+import HomePage from "./pages/HomePage"
 import FileViewerPage from "./pages/FileViewerPage"
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
       <Sidebar />
       
       <Routes>
-        <Route path="/" element={<IndexPage />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/view" element={<FileViewerPage />} />
       </Routes>
     </div>
