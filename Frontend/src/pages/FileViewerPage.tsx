@@ -1,34 +1,52 @@
 import { motion } from "framer-motion"
 import { Search } from "lucide-react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
+import { useSearchParams } from 'react-router-dom'
+import axios from "axios"
 import Header from "../components/Header"
-
-const FILES = [
-    { post_id: 10001, id: 10001, name: "test data 10001", email: "test10001@gmail.com", body: "test test test test" },
-    { post_id: 10002, id: 10002, name: "test data 10002", email: "test10002@gmail.com", body: "test test test test" },
-    { post_id: 10003, id: 10003, name: "test data 10003", email: "test10003@gmail.com", body: "test test test test" },
-    { post_id: 20001, id: 20001, name: "test data 20001", email: "test20001@gmail.com", body: "test test test test" },
-    { post_id: 20002, id: 20002, name: "test data 20002", email: "test20002@gmail.com", body: "test test test test" },
-    { post_id: 20003, id: 20003, name: "test data 20003", email: "test20003@gmail.com", body: "test test test test" },
-]
+import { FileData } from "../types"
 
 const FileViewerPage = () => {
+    // Retrieve the 'filename' query parameter value
+    const [searchParams] = useSearchParams()
+    const queryParam = searchParams.get('filename')
+
     const [searchTerm, setSearchTerm] = useState("")
-    const [filteredFiles, setFilteredFiles] = useState(FILES)
+    const [fileData, setFileData] = useState<FileData[] | null>(null)
+    const [filteredFileData, setFilteredFileData] = useState(fileData)
+
+    // Get file data via api call
+    useEffect(() => {
+        if(queryParam) {
+            const url = `http://127.0.0.1:3000/file/${queryParam}`
+            axios.get(url).then((response) => {
+                setFileData(response.data.fileData)
+            }).catch((error) => {
+                console.error("Error fetching file data:", error)
+            })
+        }
+    }, [])
+
+    // Update filteredFileData when fileData changes
+    useEffect(() => {
+        if (fileData) {
+            setFilteredFileData(fileData)
+        }
+    }, [fileData])
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Get the search string
         const term = e.target.value.toLowerCase()
         setSearchTerm(term)
         // Filter list of files by filename
-        const filteredFiles = FILES.filter((file) =>
+        const filteredFiles = fileData!.filter((file) =>
             file.post_id.toString().includes(term) ||
             file.id.toString().includes(term) ||
             file.name.toLowerCase().includes(term) ||
             file.email.toLowerCase().includes(term) ||
             file.body.toLowerCase().includes(term)
         )
-        setFilteredFiles(filteredFiles)
+        setFilteredFileData(filteredFiles)
     }
 
     return (
@@ -71,22 +89,47 @@ const FileViewerPage = () => {
                             </thead>
                             {/* Table body */}
                             <tbody className="divide-y divide-gray-700">
-                                {filteredFiles.map(file => (
+                                {queryParam || queryParam === null ? (
+                                        // If there is at least one row of data
+                                        filteredFileData && filteredFileData.length > 0 ? (filteredFileData.map(file => (
+                                        <motion.tr
+                                            key={file.id}
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100 flex gap-2 items-center">
+                                                {file.post_id}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{file.id}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{file.name}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{file.email}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{file.body}</td>
+                                        </motion.tr>
+                                    ))) : (
+                                        // If there is no file data returned
+                                        <motion.tr
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100 flex gap-2 items-center">
+                                                No data found. Empty csv file.
+                                            </td>
+                                        </motion.tr>
+                                    )
+                                ) : (
+                                    // If query paramter not found in url
                                     <motion.tr
-                                        key={file.id}
                                         initial={{ opacity: 0 }}
                                         animate={{ opacity: 1 }}
                                         transition={{ duration: 0.3 }}
                                     >
                                         <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-100 flex gap-2 items-center">
-                                            {file.post_id}
+                                            No file selected for viewing. Please select one from the homepage.
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{file.id}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{file.name}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{file.email}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{file.body}</td>
                                     </motion.tr>
-                                ))}
+                                )}
                             </tbody>
                         </table>
                     </div>

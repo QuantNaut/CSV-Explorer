@@ -1,10 +1,13 @@
 import express from "express"
+import cors from "cors"
 
 import { getFilelist, getFiledata, uploadFileData } from './database.js'
 import { upload } from "./middleware/upload.js";
 
 const app = express()
 const PORT = process.env.MAIN_PORT_NO || 3000
+
+app.use(cors())
 
 // Get list of uploaded files
 app.get("/file/list", async (req, res) => {
@@ -31,15 +34,6 @@ app.post("/file/upload", upload.single('file'), async (req, res) => {
     res.status(201).json({
         status: 201,
         message: "File uploaded successfully."
-    })
-})
-
-app.use((err, req, res, next) => {
-    console.error(err.stack)
-    res.status(500).json({
-        status: 500,
-        error: err,
-        request: req
     })
 })
 
