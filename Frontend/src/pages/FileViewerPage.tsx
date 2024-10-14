@@ -2,6 +2,7 @@ import { motion } from "framer-motion"
 import { Search } from "lucide-react"
 import React, { useEffect, useState } from "react"
 import { useSearchParams } from 'react-router-dom'
+import ReactPaginate from 'react-paginate'
 import axios from "axios"
 import Header from "../components/Header"
 import { FileData } from "../types"
@@ -10,10 +11,13 @@ const FileViewerPage = () => {
     // Retrieve the 'filename' query parameter value
     const [searchParams] = useSearchParams()
     const queryParam = searchParams.get('filename')
-
+    // States for file contents
     const [searchTerm, setSearchTerm] = useState("")
     const [fileData, setFileData] = useState<FileData[] | null>(null)
     const [filteredFileData, setFilteredFileData] = useState(fileData)
+    // States for pagination
+    const [currentPage, setCurrentPage] = useState(0)
+    const itemsPerPage = 25 // Set the number of items per page
 
     // Get file data via api call
     useEffect(() => {
@@ -34,6 +38,7 @@ const FileViewerPage = () => {
         }
     }, [fileData])
 
+    // *** Search: Filter by given string
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Get the search string
         const term = e.target.value.toLowerCase()
@@ -47,6 +52,16 @@ const FileViewerPage = () => {
             file.body.toLowerCase().includes(term)
         )
         setFilteredFileData(filteredFiles)
+        setCurrentPage(0) // Reset to the first page when search changes
+    }
+
+     // *** Pagination: Calculate the items for the current page ***
+     const paginatedData = filteredFileData
+     ? filteredFileData.slice(currentPage * itemsPerPage, (currentPage + 1) * itemsPerPage)
+     : []
+     // *** Pagination: Handle page change
+    const handlePageClick = (event: { selected: number }) => {
+        setCurrentPage(event.selected)
     }
 
     return (
@@ -75,7 +90,7 @@ const FileViewerPage = () => {
                         </div>
                     </div>
                     {/* Display table */}
-                    <div className="overflow-x-auto">
+                    <div className="overflow-x-auto mb-2">
                         <table className="min-w-full divide-y divide-gray-700">
                             {/* Table heading */}
                             <thead>
@@ -89,9 +104,9 @@ const FileViewerPage = () => {
                             </thead>
                             {/* Table body */}
                             <tbody className="divide-y divide-gray-700">
-                                {queryParam || queryParam === null ? (
+                                {queryParam || queryParam !== null ? (
                                         // If there is at least one row of data
-                                        filteredFileData && filteredFileData.length > 0 ? (filteredFileData.map(file => (
+                                        paginatedData && paginatedData.length > 0 ? (paginatedData.map(file => (
                                         <motion.tr
                                             key={file.id}
                                             initial={{ opacity: 0 }}
@@ -133,6 +148,21 @@ const FileViewerPage = () => {
                             </tbody>
                         </table>
                     </div>
+                    {/* Pagination Component */}
+                    {filteredFileData && filteredFileData.length > itemsPerPage && (
+                        <ReactPaginate
+                            previousLabel={'Prev'}
+                            nextLabel={'Next'}
+                            breakLabel={'...'}
+                            pageCount={Math.ceil(filteredFileData.length / itemsPerPage)}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={3}
+                            onPageChange={handlePageClick}
+                            containerClassName={'pagination'}
+                            activeClassName={'active'}
+                            className="flex justify-stretch rounded bg-slate-700 border-solid border-y-2 border-l-2 *:py-2 *:text-center *:w-1/6 *:border-r-2"
+                        />
+                    )}
                 </motion.div>
             </main>
         </div>
