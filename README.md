@@ -2,15 +2,17 @@
 
 ## Company: ST Engineering
 
-### Project Name: CSV-Explorer
+Related project repo link <u>[here](https://github.com/tqwdan82/Technical_Assessment)</u>
 
-#### Given Problem Statement
+### Project Name: <u>CSV-Explorer</u>
+
+#### <u>Given Problem Statement</u>
 Create a React/Svelte frontend in Typescript and NodeJS web backend in Typescript/Javascript with the following functionalities.
 1. Upload a CSV file with appropriate feedback to the user on the upload progress.
 2. List the data uploaded with pagination.
 3. Search data from the uploaded file. The web application should be responsive while listing of data and searching of data.
 
-#### Submission Requirement
+#### <u>Submission Requirement</u>
 In your submission, must include the following:
 1. Use the given csv file as the sample
 2. Include unit tests with complete test cases including edge cases.
@@ -22,9 +24,9 @@ In your submission, must include the following:
 ### 1. Setup MySQL Database
 1. Download and install _MySQL_ database
 2. Verify that you can connect to _MySQL_ and create tables
-3. Execute these [SQL query scripts](./Backend/Other/scripts.sql) to create the two tables `file_list` and `filedata` and insert the test data.
+3. Execute these <u>[SQL query scripts](./Backend/Other/scripts.sql)</u> to create the two tables `file_list` and `filedata` and insert the test data.
 
-### 2. Project Setup -- `./Backend` Folder
+### 2. Project Setup -- `./Backend`</u> Folder
 1. Create a `.env` file inside the root folder, and set the following values below in it:
     - MYSQL_HOST
     - MYSQL_USER
@@ -39,14 +41,14 @@ In your submission, must include the following:
 ### 3. Project Setup -- `./Frontend` Folder
 1. Run `npm install` to install the dependencies.
 2. Run `npm run start`.
-3. Open your browser and navigate to `http://localhost:5173/`
+3. Open your browser and navigate to <u>`http://localhost:5173/`</u>.
 
 
-#### TO NOTE:
-Any CSV file uploaded via the webapp needs to conform to the sample file structure below:
+#### <u>TO NOTE</u>:
+You can choose to use the given CSV file, [data.csv](./data.csv), or create your own file for testing. However, any CSV file uploaded via the webapp needs to conform to the sample file structure below:
 
 `"postId","id","name","email","body"`
 
 `"1","1","id labore ex et quam laborum","Eliseo@gardner.biz","laudantium enim quasi est quidem magnam"`
 
-`"1","2","quo vero reiciendis velit similique earum","Jayne_Kuhic@sydney.com","est natus enim nihil est dolore omnis voluptatem numquam\net omnis occaecati quod ullam at\nvoluptatem"`
+`"1","2","quo vero reiciendis velit similique earum","Jayne_Kuhic@sydney.com","est natus enim nihil est dolore omnis voluptatem"`
