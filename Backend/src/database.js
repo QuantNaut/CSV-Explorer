@@ -13,11 +13,13 @@ const pool = mysql.createPool({
     database: process.env.MYSQL_DATABASE
 }).promise()
 
+// Get list of all uploaded files
 export async function getFilelist() {
     const [rows] = await pool.query("SELECT * FROM file_list")
     return rows
 }
 
+// Get all file contents of a particular file by filename
 export async function getFiledata(filename) {
     const [rows] = await pool.query(`
         SELECT post_id, id, name, email, body
@@ -27,6 +29,7 @@ export async function getFiledata(filename) {
         return rows
 }
 
+// Insert name of uploaded csv file and its contents into 2 tables
 export async function uploadFileData(req, res) {
     const filename = req.file.originalname
     const filepath = process.env.UPLOAD_DIR + filename
@@ -60,4 +63,12 @@ export async function uploadFileData(req, res) {
             console.log(`Error removing file: ${err}`)
         }
     })
+}
+
+// Remove the file and its related contents from the 2 db tables
+export async function deleteFile(filename) {
+    await pool.query(`
+        DELETE FROM file_list
+        WHERE name = ?
+        `, [filename])
 }

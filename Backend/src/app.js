@@ -1,7 +1,7 @@
 import express from "express"
 import cors from "cors"
 
-import { getFilelist, getFiledata, uploadFileData } from './database.js'
+import { getFilelist, getFiledata, uploadFileData, deleteFile } from './database.js'
 import { upload } from "./middleware/upload.js";
 
 const app = express()
@@ -34,6 +34,16 @@ app.post("/file/upload", upload.single('file'), async (req, res) => {
     res.status(201).json({
         status: 201,
         message: "File uploaded successfully."
+    })
+})
+
+// Delete a file from db
+app.delete("/file/delete/:filename", async (req, res) => {
+    const filename = req.params.filename
+    await deleteFile(filename)
+    res.status(200).json({
+        status: 200,
+        message: "File has been removed from our server."
     })
 })
 
