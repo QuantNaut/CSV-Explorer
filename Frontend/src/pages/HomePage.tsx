@@ -31,6 +31,7 @@ const HomePage = () => {
         }
     }, [fileList])
 
+    // Search the list of files
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Get the search string
         const term = e.target.value.toLowerCase()
@@ -38,6 +39,17 @@ const HomePage = () => {
         // Filter list of files by filename
         const filteredFiles = fileList!.filter((file) => file.name.toLowerCase().includes(term))
         setFilteredFileList(filteredFiles)
+    }
+
+    // Delete a uploaded file via api call
+    const handleOnClick = (filename: string) => {
+        const url = `http://127.0.0.1:3000/file/delete/${filename}`
+        axios.delete(url).then(() => {
+            console.log("File has been removed.")
+        }).catch((error) => {
+            console.error("Error deleting file:", error)
+        })
+        setActionTaken(true)
     }
 
     return (
@@ -106,7 +118,10 @@ const HomePage = () => {
                                                     <Eye size={18} />
                                                 </button>
                                             </Link>
-                                            <button className='text-red-400 hover:text-red-300'>
+                                            <button
+                                                className='text-red-400 hover:text-red-300'
+                                                onClick={() => handleOnClick(file.name)}
+                                            >
                                                 <Trash2 size={18} />
                                             </button>
                                         </td>
