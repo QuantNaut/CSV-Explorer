@@ -26,15 +26,9 @@ In your submission, must include the following:
 2. Verify that you can connect to _MySQL_ and create tables
 3. Execute these <u>[SQL query scripts](./Backend/Other/scripts.sql)</u> to create the two tables `file_list` and `filedata` and insert the test data.
 
-### 2. Project Setup -- `./Backend`</u> Folder
-1. Create a `.env` file inside the root folder, and set the following values below in it:
-    - MYSQL_HOST
-    - MYSQL_USER
-    - MYSQL_PASSWORD
-    - MYSQL_DATABASE
-    - MAIN_PORT_NO
-    - UPLOAD_DIR
-2. Create an empty directory at the same path that you set for value `UPLOAD_DIR` above, e.g. `"Other/tmp"`
+### 2. Project Setup -- `./Backend` Folder
+1. Rename the `.env.sample` file inside the root folder to `.env`, and fill in all the empty values that you see.
+2. Create an empty directory at the same path that you set for value `UPLOAD_DIR` above, e.g. `"Other/tmp/"`
 3. Run `npm install` to install the dependencies.
 4. Run `npm run start:dev`.
 

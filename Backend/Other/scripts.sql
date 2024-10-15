@@ -20,10 +20,10 @@ CREATE TABLE `filedata` (
 );
 
 -- Test data
-INSERT INTO filenames(filename)
+INSERT INTO file_list(name,uploaded)
 VALUES
-('test_1.csv'),
-('test_2.csv');
+('test_1.csv','2024-10-13T13:45:03.085Z'),
+('test_2.csv','2024-10-13T13:45:03.085Z');
 
 INSERT INTO filedata(post_id, id, filename, name, email, body)
 VALUES
