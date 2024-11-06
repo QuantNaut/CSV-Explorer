@@ -34,7 +34,7 @@ In your submission, must include the following:
 
 ### 3. Project Setup -- `./Frontend` Folder
 1. Run `npm install` to install the dependencies.
-2. Run `npm run start`.
+2. Run `npm run dev`.
 3. Open your browser and navigate to <u>`http://localhost:5173/`</u>.
 
 
